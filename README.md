@@ -32,6 +32,15 @@ draws the page itself at 2× supersampling; otherwise it copies the
 bundled `entry.png` byte-for-byte. It is deterministic — no network, no
 clock, no randomness — so two runs write identical bytes.
 
+## Build notes
+
+The page carries 48 stories across 7 regions. It is drawn
+programmatically with Pillow at 2× supersampling and downsampled to
+1024×1024; when Pillow or fonts are unavailable, `main.py` falls back
+to copying the bundled `entry.png` byte-for-byte. A wording fix in
+this pass: story 27 (Jakarta) now correctly says Bank Indonesia lifted
+its benchmark rate by 25 *basis* points to 6%.
+
 ## License
 
 MIT — see [LICENSE](LICENSE).

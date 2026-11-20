@@ -137,8 +137,8 @@ GROUPS = [
          "Violence flares ahead of ousted premier Hasina's planned "
          "return."),
         (27, "JAKARTA",
-         "Bank Indonesia lifts benchmark rate 25 points to 6% to defend "
-         "the rupiah."),
+         "Bank Indonesia lifts benchmark rate 25 basis points to 6% to "
+         "defend the rupiah."),
         (34, "FIJI",
          "Fiji and Tonga declare disasters as El Ni\u00f1o drought "
          "worsens; cyclone nears."),
