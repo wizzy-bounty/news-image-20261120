@@ -17,11 +17,14 @@ A one-page broadsheet that sums up the world's news of **Friday
 - three illustrated lead stories — the Shenzhen three-way summit, the
   ICJ genocide ruling on Myanmar, and Anthropic's record IPO amid a
   market sell-off;
-- a dotted world map with numbered pins marking where the day happened;
+- a markets ticker strip under the masthead with the day's index
+  moves (S&P, Dow, Nikkei, SoftBank, Anthropic's debut);
+- a dotted world map with 26 numbered pins marking where the day
+  happened, with faint region labels;
 - a numbered index of **48 stories** across 7 regions, from the ICJ and
   Hormuz to Voyager 1 reaching one light-day from Earth;
 - a "Day in Numbers" strip: 9–6, $81.3bn, −1,101, −4.8%, $48.3bn,
-  100,000, 26bn km, $2.3bn, 100%.
+  100,000, 26bn km, $2.3bn, 100%, 51–48.
 
 ## How it builds
 
@@ -40,6 +43,13 @@ programmatically with Pillow at 2× supersampling and downsampled to
 to copying the bundled `entry.png` byte-for-byte. A wording fix in
 this pass: story 27 (Jakarta) now correctly says Bank Indonesia lifted
 its benchmark rate by 25 *basis* points to 6%.
+
+v2 refinement (same day, same 48 stories): markets ticker strip under
+the masthead, one more detail layer in each lead scene (conference
+table and harbour reflections; column capitals, steps and a gavel
+block; candlesticks), a larger index via tighter leading and gutters,
+26 map pins with faint region labels, and a tenth Day-in-Numbers
+figure (51–48, the Senate war-powers vote).
 
 ## License
 

@@ -13,6 +13,11 @@ entry.png byte-for-byte, so the output is always a valid image.
 Deterministic: no network, no clock, no randomness — two runs in the
 same environment write identical bytes.  Standard library only, apart
 from the optional Pillow import, which is guarded.
+
+v2 refinement (same day, same 48 stories): a markets ticker strip
+under the masthead, richer lead-panel scenes, a larger story index
+(tighter leading and gutters), four more map pins with faint region
+labels, and a tenth Day-in-Numbers figure.
 """
 
 import os
@@ -214,6 +219,7 @@ NUMBERS = [
     ("26bn km", "Voyager 1, a light-day out"),
     ("$2.3bn", "GTA VI first-day sales"),
     ("100%", "debt-to-GDP warning"),
+    ("51\u201348", "Senate war-powers vote"),
 ]
 
 # --------------------------------------------------------------------------
@@ -262,9 +268,11 @@ PINS = [
     (6, 46.7, 24.6), (7, 56.3, 26.5), (8, 30.5, 50.4), (14, 30.7, 36.9),
     (15, -122.0, 37.4), (16, -77.0, 38.9), (20, 34.3, 31.4),
     (22, 125.8, 39.0), (26, 90.4, 23.8), (27, 106.8, -6.2),
-    (28, 36.8, -1.3), (33, -17.4, 14.7), (34, 178.4, -17.6),
+    (28, 36.8, -1.3), (30, 30.5, 11.0), (31, 39.8, 14.7),
+    (33, -17.4, 14.7), (34, 178.4, -17.6),
     (35, -118.2, 34.0), (36, -72.3, 18.5), (39, -47.9, -15.8),
-    (46, 151.2, -33.9), (48, 12.5, 41.9),
+    (41, -74.1, 4.6), (46, 151.2, -33.9), (47, -115.1, 36.2),
+    (48, 12.5, 41.9),
 ]
 
 # --------------------------------------------------------------------------
@@ -413,6 +421,11 @@ def scene_summit(d, x, y, w, h):
     polygon(d, pts + [(sx(250), sy(90)), (sx(0), sy(90))], fill=TEAL_DARK)
     # ground
     rect(d, (x, sy(80), x + w, y + h), fill=INK)
+    # skyline reflections shimmering in the harbour strip
+    for rx in (44, 96, 140, 190):
+        rect(d, (sx(rx), sy(81.5), sx(rx + 7), sy(88)),
+             fill=(64, 96, 104))
+    rect(d, (sx(212), sy(81.5), sx(218), sy(87)), fill=(96, 84, 48))
     # three flag poles with flags (US, China, Russia — simplified)
     for i, cxd in enumerate((62, 118, 174)):
         cx = sx(cxd)
@@ -443,6 +456,13 @@ def scene_summit(d, x, y, w, h):
                  fill=(40, 84, 166))
             rect(d, (fx0, fy0 + 2 * fh / 3, fx0 + fw, fy0 + fh),
                  fill=CRIMSON)
+    # conference table in front of the flags, with three name plates
+    polygon(d, [(sx(46), sy(76)), (sx(204), sy(76)), (sx(216), sy(84)),
+                (sx(34), sy(84))], fill=TEAL_DARK)
+    line(d, [(sx(46), sy(76)), (sx(204), sy(76))], fill=GOLD,
+         width=S(1.2))
+    for cxd in (62, 118, 174):
+        rect(d, (sx(cxd - 7), sy(78.5), sx(cxd + 7), sy(81)), fill=GOLD)
 
 
 def scene_court(d, x, y, w, h):
@@ -458,15 +478,21 @@ def scene_court(d, x, y, w, h):
 
     rect(d, (x, y, x + w, y + h), fill=(240, 238, 228))
     cx = sx(125)
-    # pediment
+    # pediment, with a gold disc at its centre
     polygon(d, [(sx(37), sy(26)), (sx(213), sy(26)), (sx(125), sy(6))],
             fill=TEAL)
+    ellipse(d, (sx(119), sy(13), sx(131), sy(25)), fill=GOLD)
     rect(d, (sx(14), sy(28), sx(236), sy(33)), fill=TEAL_DARK)
-    # columns
+    # columns with capitals and bases
     for k in range(5):
         cxx = sx(30 + k * 47.5)
         rect(d, (cxx - 5, sy(36), cxx + 5, sy(76)), fill=(192, 184, 158))
+        rect(d, (cxx - 7, sy(36), cxx + 7, sy(39.5)), fill=(172, 162, 134))
+        rect(d, (cxx - 7, sy(72.5), cxx + 7, sy(76)), fill=(172, 162, 134))
     rect(d, (sx(14), sy(76), sx(236), sy(82)), fill=TEAL_DARK)
+    # two entrance steps below the base
+    rect(d, (sx(8), sy(82), sx(242), sy(85.5)), fill=(192, 184, 158))
+    rect(d, (sx(2), sy(85.5), sx(248), sy(89)), fill=(172, 162, 134))
     # scales: pillar, beam, two pans
     line(d, [(cx, sy(38)), (cx, sy(72))], fill=INK, width=S(3))
     line(d, [(sx(73), sy(42)), (sx(177), sy(42))], fill=INK, width=S(3))
@@ -482,6 +508,7 @@ def scene_court(d, x, y, w, h):
     line(d, [(sx(183), sy(74)), (sx(207), sy(58))], fill=CRIMSON_DARK,
          width=S(3))
     rect(d, (sx(200), sy(48), sx(214), sy(58)), fill=CRIMSON)
+    ellipse(d, (sx(198), sy(58), sx(216), sy(62)), fill=CRIMSON_DARK)
 
 
 def scene_markets(d, x, y, w, h):
@@ -502,6 +529,17 @@ def scene_markets(d, x, y, w, h):
         px = x + bx * w / 250.0
         rect(d, (px, y + h - bh, px + w * 20 / 250.0, y + h),
              fill=(52, 74, 104))
+    # candlesticks floating above the skyline (mostly red on the day)
+    candles = [(0.06, 30, 16, False), (0.16, 34, 12, False),
+               (0.38, 40, 14, True), (0.60, 48, 18, False),
+               (0.82, 58, 13, False), (0.90, 64, 10, True)]
+    for fx, base_h, hgt, up in candles:
+        cxp = x + fx * w
+        col = GREEN if up else CRIMSON
+        line(d, [(cxp, y + h - base_h - hgt), (cxp, y + h - base_h + 4)],
+             fill=col, width=S(1.2))
+        rect(d, (cxp - 3.5, y + h - base_h - hgt * 0.7,
+                 cxp + 3.5, y + h - base_h), fill=col)
     # rising green line (the IPO)
     up = [(x + 10, y + h - 24), (x + w * 0.3, y + h - 36),
           (x + w * 0.52, y + h - 46), (x + w * 0.72, y + h - 56)]
@@ -521,9 +559,9 @@ def scene_markets(d, x, y, w, h):
 # --------------------------------------------------------------------------
 
 INDEX_Y0 = 456
-INDEX_Y1 = 944
-COL_X = [MARGIN, MARGIN + 328, MARGIN + 656]
-COL_W = 308
+INDEX_Y1 = 946
+COL_X = [MARGIN, MARGIN + 326, MARGIN + 652]
+COL_W = 310
 
 
 def rich_lines(d, segments, max_w, space_font):
@@ -561,9 +599,9 @@ def story_segments(fonts, size, num, place, headline):
 
 def plan_index(d, fonts, size):
     """Return placements [(kind, col, y, payload)] or None if it overflows."""
-    lh = size * 1.27
-    gap = 4.5
-    header_h = 21
+    lh = size * 1.21
+    gap = 3.4
+    header_h = 19.5
     placements = []
     col = 0
     y = INDEX_Y0
@@ -610,20 +648,44 @@ def render(Image, ImageDraw, ImageFont):
     rect(d, (12.5, 12.5, W - 12.5, H - 12.5), outline=RULE, width=S(0.75))
 
     # ---------------- masthead ----------------
-    tracked(d, (W / 2, 21), "THE WORLD'S NEWS \u00b7 ON ONE PAGE",
+    tracked(d, (W / 2, 18), "THE WORLD'S NEWS \u00b7 ON ONE PAGE",
             fonts.get("sans_b", 10), TEAL, 2.2, anchor="ma")
     title = "ONE DAY, ONE PLANET"
     tsize = 56
     while tsize > 30 and text_w(d, title, fonts.get("serif_b", tsize)) > 950:
         tsize -= 2
-    text(d, (W / 2, 33), title, fonts.get("serif_b", tsize), fill=INK,
+    text(d, (W / 2, 28), title, fonts.get("serif_b", tsize), fill=INK,
          anchor="ma")
-    line(d, [(MARGIN, 97), (W - MARGIN, 97)], fill=RULE, width=S(2.5))
-    line(d, [(MARGIN, 101.5), (W - MARGIN, 101.5)], fill=RULE, width=S(1))
-    text(d, (W / 2, 107), "Friday 20 November 2026",
+    line(d, [(MARGIN, 93), (W - MARGIN, 93)], fill=RULE, width=S(2.5))
+    line(d, [(MARGIN, 97.5), (W - MARGIN, 97.5)], fill=RULE, width=S(1))
+    text(d, (W / 2, 102), "Friday 20 November 2026",
          fonts.get("serif_b", 25), fill=CRIMSON, anchor="ma")
-    tracked(d, (W / 2, 136), "48 STORIES \u00b7 7 REGIONS \u00b7 ONE DAY",
+    tracked(d, (W / 2, 130), "48 STORIES \u00b7 7 REGIONS \u00b7 ONE DAY",
             fonts.get("sans_b", 12), TEAL_DARK, 2.4, anchor="ma")
+
+    # ---------------- markets ticker strip ----------------
+    rect(d, (MARGIN, 146, W - MARGIN, 164), fill=PAPER_DARK)
+    line(d, [(MARGIN, 146), (W - MARGIN, 146)], fill=RULE, width=S(0.75))
+    line(d, [(MARGIN, 164), (W - MARGIN, 164)], fill=RULE, width=S(0.75))
+    ticker = [
+        ("S&P 500 ", INK), ("\u25bc 2.0%", CRIMSON),
+        ("   \u00b7   ", INK_SOFT),
+        ("DOW ", INK), ("\u25bc 1,101", CRIMSON),
+        (" BELOW 50,000", INK_SOFT),
+        ("   \u00b7   ", INK_SOFT),
+        ("NIKKEI ", INK), ("\u25bc 4.8%", CRIMSON),
+        ("   \u00b7   ", INK_SOFT),
+        ("SOFTBANK ", INK), ("\u25bc 16%", CRIMSON),
+        ("   \u00b7   ", INK_SOFT),
+        ("ANTHROPIC ", INK), ("\u25b2 17%", GREEN),
+        (" NASDAQ DEBUT", INK_SOFT),
+    ]
+    tf = fonts.get("sans_b", 10)
+    total = sum(text_w(d, s, tf) for s, _ in ticker)
+    tx = (W - total) / 2
+    for s, fill in ticker:
+        text(d, (tx, 150), s, tf, fill=fill)
+        tx += text_w(d, s, tf)
 
     # ---------------- lead panels ----------------
     leads = [
@@ -638,7 +700,7 @@ def render(Image, ImageDraw, ImageFont):
          "Anthropic's record $81.3bn IPO closes +17%",
          "But the Dow falls 1,101 points as an AI sell-off bites."),
     ]
-    lead_y, lead_h, panel_w, gap = 154, 168, 316, 12
+    lead_y, lead_h, panel_w, gap = 170, 160, 316, 12
     for i, (kicker, accent, scene, head, deck) in enumerate(leads):
         px = MARGIN + i * (panel_w + gap)
         rect(d, (px, lead_y, px + panel_w, lead_y + lead_h), fill=CARD,
@@ -658,12 +720,12 @@ def render(Image, ImageDraw, ImageFont):
             hy += 13.5
 
     # ---------------- map band ----------------
-    text(d, (MARGIN, 331), "THE DAY ON THE MAP", fonts.get("sans_b", 12),
+    text(d, (MARGIN, 339), "THE DAY ON THE MAP", fonts.get("sans_b", 12),
          fill=TEAL_DARK)
     note = "numbered pins mark index stories"
-    text(d, (W - MARGIN, 332), note, fonts.get("sans", 10),
+    text(d, (W - MARGIN, 340), note, fonts.get("sans", 10),
          fill=INK_SOFT, anchor="ra")
-    map_y0, map_y1 = 348, 446
+    map_y0, map_y1 = 356, 448
     rect(d, (MARGIN, map_y0, W - MARGIN, map_y1), fill=(240, 238, 230),
          outline=INK_SOFT, width=S(0.75))
     cell_w = (W - 2 * MARGIN) / MAP_COLS
@@ -675,9 +737,16 @@ def render(Image, ImageDraw, ImageFont):
             for c in range(c0, c1 + 1):
                 cx = MARGIN + (c + 0.5) * cell_w
                 ellipse(d, (cx - r, cy - r, cx + r, cy + r), fill=MAP_DOT)
+    # faint region labels in the ocean space
+    lab_f = fonts.get("sans_b", 8.5)
+    lab_fill = (164, 174, 168)
+    for lx, ly, lab in ((44, 398, "N. AMERICA"), (352, 382, "EUROPE"),
+                        (618, 418, "AFRICA"), (636, 440, "ASIA-PACIFIC")):
+        tracked(d, (lx, ly), lab, lab_f, lab_fill, 1.6)
     nudges = {3: (-3, -5), 16: (4, 5), 15: (-3, -3), 35: (3, 4),
               8: (-2, -4), 14: (5, 4), 48: (-5, 3), 20: (-4, 5),
-              7: (6, -3), 1: (0, -3)}
+              7: (6, -3), 1: (0, -3), 31: (5, -4), 41: (-5, 6),
+              47: (7, -7)}
     for num, lon, lat in PINS:
         px = MARGIN + (lon + 180) / 360.0 * (W - 2 * MARGIN)
         py = map_y0 + (80 - lat) / 128.0 * (map_y1 - map_y0)
@@ -689,21 +758,24 @@ def render(Image, ImageDraw, ImageFont):
              fill=(250, 248, 240), anchor="ma")
 
     # ---------------- story index ----------------
-    for sep_x in (346, 674):
+    for sep_x in (344, 670):
         line(d, [(sep_x, INDEX_Y0 + 2), (sep_x, INDEX_Y1)],
              fill=(196, 188, 168), width=S(0.75))
     chosen = None
-    for size in (11.5, 11, 10.5, 10, 9.5, 9):
+    for size in (12, 11.5, 11, 10.5, 10, 9.5, 9):
         chosen = plan_index(d, fonts, size)
         if chosen is not None:
             break
     if chosen is None:
         raise RuntimeError("index does not fit")
     size = size
-    lh = size * 1.27
+    lh = size * 1.21
     for kind, col, y, payload in chosen:
         x0 = COL_X[col]
         if kind == "header":
+            if y > INDEX_Y0 + 1:
+                line(d, [(x0, y - 3), (x0 + COL_W + 8, y - 3)],
+                     fill=(206, 198, 178), width=S(0.75))
             tracked(d, (x0 + 1, y + 1), payload, fonts.get("sans_b", 11),
                     TEAL_DARK, 1.1)
             line(d, [(x0, y + 16.5), (x0 + COL_W + 8, y + 16.5)],
@@ -730,16 +802,16 @@ def render(Image, ImageDraw, ImageFont):
     for i, (value, label) in enumerate(NUMBERS):
         cx = MARGIN + (i + 0.5) * cell_w_n
         if i:
-            line(d, [(MARGIN + i * cell_w_n, 974),
-                     (MARGIN + i * cell_w_n, 1006)],
+            line(d, [(MARGIN + i * cell_w_n, 973),
+                     (MARGIN + i * cell_w_n, 1005)],
                  fill=(196, 188, 168), width=S(0.75))
-        text(d, (cx, 972), value, fonts.get("sans_b", 15), fill=INK,
+        text(d, (cx, 971), value, fonts.get("sans_b", 14.5), fill=INK,
              anchor="ma")
-        ly = 990
-        for ln in wrap(d, label, fonts.get("sans", 8), cell_w_n - 8):
-            text(d, (cx, ly), ln, fonts.get("sans", 8), fill=INK_SOFT,
+        ly = 989
+        for ln in wrap(d, label, fonts.get("sans", 7.5), cell_w_n - 8):
+            text(d, (cx, ly), ln, fonts.get("sans", 7.5), fill=INK_SOFT,
                  anchor="ma")
-            ly += 9.5
+            ly += 9
 
     return img.resize((S(W) // SS, S(H) // SS), Image.LANCZOS)
 
