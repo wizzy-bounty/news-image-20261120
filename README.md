@@ -14,17 +14,18 @@ A one-page broadsheet that sums up the world's news of **Friday
 20 November 2026** in a single 1024×1024 image:
 
 - a masthead with the full date, large and unmissable;
-- three illustrated lead stories — the Shenzhen three-way summit, the
-  ICJ genocide ruling on Myanmar, and Anthropic's record IPO amid a
-  market sell-off;
-- a markets ticker strip under the masthead with the day's index
-  moves (S&P, Dow, Nikkei, SoftBank, Anthropic's debut);
+- a markets ticker strip directly under the masthead with the day's
+  index moves (S&P 500 ▼2.0%, Dow ▼1,101 below 50,000, Nikkei ▼4.8%,
+  SoftBank ▼16%, Anthropic ▲17% on its Nasdaq debut);
+- three illustrated lead panels, each with its own drawn scene — the
+  Shenzhen three-way summit, the ICJ genocide ruling on Myanmar, and
+  Anthropic's record IPO amid a market sell-off;
 - a dotted world map with 26 numbered pins marking where the day
   happened, with faint region labels;
 - a numbered index of **48 stories** across 7 regions, from the ICJ and
   Hormuz to Voyager 1 reaching one light-day from Earth;
-- a "Day in Numbers" strip: 9–6, $81.3bn, −1,101, −4.8%, $48.3bn,
-  100,000, 26bn km, $2.3bn, 100%, 51–48.
+- a ten-figure "Day in Numbers" strip along the foot: 9–6, $81.3bn,
+  −1,101, −4.8%, $48.3bn, 100,000, 26bn km, $2.3bn, 100%, 51–48.
 
 ## How it builds
 

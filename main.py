@@ -16,8 +16,8 @@ from the optional Pillow import, which is guarded.
 
 v2 refinement (same day, same 48 stories): a markets ticker strip
 under the masthead, richer lead-panel scenes, a larger story index
-(tighter leading and gutters), four more map pins with faint region
-labels, and a tenth Day-in-Numbers figure.
+(tighter leading and gutters), 26 numbered map pins with faint
+region labels, and a 10-figure Day-in-Numbers strip.
 """
 
 import os
