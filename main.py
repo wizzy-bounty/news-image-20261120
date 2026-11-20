@@ -431,16 +431,20 @@ def _wrap_story(p, words, size, col_w):
     return lines
 
 
+INDEX_LEADING = 1.10     # index line height as a multiple of font size
+INDEX_STORY_GAP = 1.4    # vertical gap after each index story
+
+
 def _index_blocks(p, size, col_w):
     """Return blocks: ('h', group) or ('s', lines) with heights."""
-    lh = size * 1.18
+    lh = size * INDEX_LEADING
     blocks = []
     for name, stories in GROUPS:
-        blocks.append(("h", name, 4.0 + size * 1.28 + 3.5))
+        blocks.append(("h", name, 6.0 + size * 1.24))
         for num, town, head in stories:
             words = _story_words(p, num, town, head, size)
             lines = _wrap_story(p, words, size, col_w)
-            blocks.append(("s", lines, len(lines) * lh + 2.5))
+            blocks.append(("s", lines, len(lines) * lh + INDEX_STORY_GAP))
     return blocks
 
 
@@ -468,7 +472,7 @@ def _pack_columns(blocks, avail_h):
 
 
 def _draw_story_lines(p, lines, x, y, size):
-    lh = size * 1.18
+    lh = size * INDEX_LEADING
     space_w = p.text_len(" ", SANS, size)
     for line in lines:
         cx = x
